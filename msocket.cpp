@@ -1,40 +1,12 @@
-#include <iostream>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <string.h>
+#include "msocket.h"
 
-#include <QDebug>
-
-#define IP "127.0.0.1"
-#define PORT 9762
-
-char buff[2048];
 int clint_fd;
 
 using namespace std;
 
-void IntToByteArray(int n, char* b) {
-        b[0] =  (n & 0xff);
-        b[1] =  (n >> 8 & 0xff);
-        b[2] =  (n >> 16 & 0xff);
-        b[3] =  (n >> 24 & 0xff);
-        return;
-}
-int ByteArrayToInt(char* b) {
-         return (int) ((((b[3] & 0xff) << 24)
-                    | ((b[2] & 0xff) << 16)
-                    | ((b[1] & 0xff) << 8)
-                    | ((b[0] & 0xff) << 0)));
-}
-
 int m_init(){
 
     struct sockaddr_in clinaddr;
-
 
     clint_fd = socket(AF_INET , SOCK_STREAM, 0);
     //cout<<clint_fd<<endl;
@@ -50,11 +22,12 @@ int m_init(){
     return 0;
 }
 
-int m_send(const char* s){
-    if(send(clint_fd, buff, 24, 0)<0){
-        qDebug()<<"send error";
+int m_send(const char* buff, int len){
+    if(send(clint_fd, buff, len, 0)<0){
+        qDebug()<<"msocket=>m_send: send error.";
+        return -1;
     }else{
-        qDebug()<<"send success.";
+        qDebug()<<"msocket=>m_send: send success.";
     }
     return 0;
 }
@@ -64,6 +37,7 @@ void m_close(){
 }
 
 int m_test(){
+    char buff[BUFF_LEN];
     char title[4];
     IntToByteArray(10, title);
     char num[4];
@@ -86,5 +60,6 @@ int m_test(){
     memcpy((void*)(buff+16), (void*)len1, 4);
     memcpy((void*)(buff+20), (void*)data1, 4);
 
-    m_send(buff);
+    m_send(buff, 24);
+    return 0;
 }
