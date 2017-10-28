@@ -1,6 +1,6 @@
 #include "msocket.h"
 
-int clint_fd;
+int client_fd;
 
 using namespace std;
 
@@ -8,7 +8,7 @@ int m_init(){
 
     struct sockaddr_in clinaddr;
 
-    clint_fd = socket(AF_INET , SOCK_STREAM, 0);
+    client_fd = socket(AF_INET , SOCK_STREAM, 0);
     //cout<<clint_fd<<endl;
     memset(&clinaddr, 0, sizeof(clinaddr));
     clinaddr.sin_family = AF_INET;
@@ -16,14 +16,14 @@ int m_init(){
     clinaddr.sin_port = htons(PORT);
 
     int erno;
-    if((erno = connect(clint_fd, (struct sockaddr*)&clinaddr, sizeof(clinaddr))) <0){
+    if((erno = connect(client_fd, (struct sockaddr*)&clinaddr, sizeof(clinaddr))) <0){
         cout<<" connect err:"<<erno<<endl;
     }
     return 0;
 }
 
 int m_send(const char* buff, int len){
-    if(send(clint_fd, buff, len, 0)<0){
+    if(send(client_fd, buff, len, 0)<0){
         qDebug()<<"msocket=>m_send: send error.";
         return -1;
     }else{
@@ -32,8 +32,17 @@ int m_send(const char* buff, int len){
     return 0;
 }
 
+int m_recv(char* buff){
+    int n;
+    if((n = recv(client_fd, buff, BUFF_LEN, 0)) < 0){
+        qDebug()<<"msocket=>m_recv error.";
+    }else{
+        return n;
+    }
+}
+
 void m_close(){
-    close(clint_fd);
+    close(client_fd);
 }
 
 int m_test(){

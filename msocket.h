@@ -20,8 +20,8 @@
 
 int m_init();
 int m_send(const char* buff, int len);
-int m_test();
+int m_recv(char* buff);
 void m_close();
-
+int m_test();
 
 #endif // MSOCKET_H

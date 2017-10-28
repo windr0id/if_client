@@ -29,14 +29,17 @@ SOURCES += \
     msocket.cpp \
     tools.cpp \
     sign.cpp \
-    message.cpp
+    message.cpp \
+    dialoglogin.cpp
 
 HEADERS += \
         mainwindow.h \
     msocket.h \
     tools.h \
     sign.h \
-    message.h
+    message.h \
+    dialoglogin.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    dialoglogin.ui

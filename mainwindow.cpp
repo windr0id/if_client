@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "dialoglogin.h"
 #include <QDebug>
 #include <string>
 
@@ -12,19 +13,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    on_Button_login_clicked();
+    m_init();
     ui->setupUi(this);
+    DialogSignup *dsu = new DialogSignup;
+    dsu->exec();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     m_close();
-}
-
-void MainWindow::on_Button_signal_clicked()
-{
-    m_test();
 }
 
 void MainWindow::on_Button_send_clicked()
@@ -42,7 +40,7 @@ void MainWindow::on_Button_login_clicked()
 {
     m_close();
     m_init();
-    char* u = "user1";
+    char* u = "user3";
     char* p = "123123";
     signup(u, strlen(u)+1, p, strlen(p)+1);
 }

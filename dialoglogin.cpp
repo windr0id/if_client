@@ -1,0 +1,42 @@
+#include <QCloseEvent>
+#include "dialoglogin.h"
+#include "ui_dialoglogin.h"
+
+#include "sign.h"
+
+DialogSignup::DialogSignup(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::DialogSignup)
+{
+    ui->setupUi(this);
+}
+
+DialogSignup::~DialogSignup()
+{
+    delete ui;
+}
+
+void DialogSignup::on_buttonBox_rejected()
+{
+    exit(0);
+}
+
+void DialogSignup::on_buttonBox_accepted()
+{
+    int id = 10002;
+    char* pass = "123456";
+    if(login(id, 4, pass, strlen(pass)+1) != 0){
+        //do something
+        qDebug()<<"info incorrect";
+    }else{
+        qDebug()<<get_username();
+    }
+}
+
+
+void DialogSignup::closeEvent(QCloseEvent *event)
+{
+    if(get_status() == false){
+        exit(0);
+    }
+}

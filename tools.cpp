@@ -23,7 +23,9 @@ void ByteArrayToStr(char* b, char* dest, int len){
     dest[len] = '\0';
 }
 
-
+/**
+ *
+ */
 void setHead(char* buff, int title, int num){
     char c_title[4];
     IntToByteArray(title, c_title);
@@ -47,4 +49,18 @@ int setData(char* buff, int num, char* (pdata)[], int datalen[]){
         length += 4+datalen[i];
     }
     return length;
+}
+/**
+ * 报文解析
+ */
+int t_parse(char* buff, int* title, int* num, char* (pdata)[], int datalen[]){
+    *title = ByteArrayToInt(buff);
+    *num = ByteArrayToInt(buff+4);
+    char* cursor = buff+8;
+    for(int i=0; i<*num; i++){
+        datalen[i] = ByteArrayToInt(cursor);
+        pdata[i] = cursor+4;
+        cursor += 4+datalen[i];
+    }
+    return 0;
 }
