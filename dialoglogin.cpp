@@ -37,6 +37,6 @@ void DialogSignup::on_buttonBox_accepted()
 void DialogSignup::closeEvent(QCloseEvent *event)
 {
     if(get_status() == false){
-        exit(0);
+        //exit(0);
     }
 }

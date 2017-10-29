@@ -30,7 +30,8 @@ SOURCES += \
     tools.cpp \
     sign.cpp \
     message.cpp \
-    dialoglogin.cpp
+    dialoglogin.cpp \
+    online.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,7 +39,8 @@ HEADERS += \
     tools.h \
     sign.h \
     message.h \
-    dialoglogin.h
+    dialoglogin.h \
+    online.h
 
 FORMS += \
         mainwindow.ui \

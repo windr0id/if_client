@@ -32,9 +32,9 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>109</x>
       <y>10</y>
-      <width>400</width>
+      <width>351</width>
       <height>240</height>
      </rect>
     </property>
@@ -42,9 +42,9 @@
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>260</y>
-      <width>300</width>
+      <x>109</x>
+      <y>270</y>
+      <width>251</width>
       <height>60</height>
      </rect>
     </property>
@@ -53,9 +53,9 @@
     <property name="geometry">
      <rect>
       <x>390</x>
-      <y>290</y>
+      <y>270</y>
       <width>71</width>
-      <height>25</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -65,14 +65,24 @@
    <widget class="QPushButton" name="Button_login">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>260</y>
+      <x>10</x>
+      <y>290</y>
       <width>71</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
      <string>login</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>81</width>
+      <height>241</height>
+     </rect>
     </property>
    </widget>
   </widget>

@@ -20,10 +20,6 @@ int send_message(int destid, char* message, int meslen){
     char* (pdata)[3] = {c_tag, c_destid, message};
     int len = setData(buff, num, pdata, datalen);
 
-    for(int i=0; i<30; i++){
-        qDebug()<<(int)buff[i];
-    }
-
     m_send(buff, len);
     return 0;
 }

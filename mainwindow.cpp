@@ -2,10 +2,13 @@
 #include "ui_mainwindow.h"
 #include "dialoglogin.h"
 #include <QDebug>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include <string>
 
 #include "message.h"
 #include "sign.h"
+#include "online.h"
 
 using namespace std;
 
@@ -17,6 +20,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     DialogSignup *dsu = new DialogSignup;
     dsu->exec();
+
+    int n;
+    int ids[100];
+    char unames[100][21];
+    getOnluser(&n, ids, unames);
+    QListWidget* listWidget = this->ui->listWidget;
+    for(int i=0; i<n; i++){
+        QListWidgetItem* l = new QListWidgetItem(unames[i], listWidget);
+        listWidget->addItem(l);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -33,7 +46,7 @@ void MainWindow::on_Button_send_clicked()
     int meslen = qb_text.length();
     send_message(976284396, c_text, meslen);
     std::cout<<c_text<<"end";
-    this->ui->textEdit->clear();
+    //this->ui->textEdit->clear();
 }
 
 void MainWindow::on_Button_login_clicked()
