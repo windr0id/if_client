@@ -23,8 +23,11 @@ void DialogSignup::on_buttonBox_rejected()
 
 void DialogSignup::on_buttonBox_accepted()
 {
-    int id = 10002;
+    int id = 10003;
     char* pass = "123456";
+    QString s_id = this->ui->usernameEdit->toPlainText();
+    id = s_id.toInt();
+    qDebug()<<id;
     if(login(id, 4, pass, strlen(pass)+1) != 0){
         //do something
         qDebug()<<"info incorrect";

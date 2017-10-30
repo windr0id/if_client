@@ -17,8 +17,8 @@ public:
 
 private slots:
         void on_Button_send_clicked();
-
         void on_Button_login_clicked();
+        void on_mesin(int, int, QString);
 
 private:
     Ui::MainWindow *ui;
