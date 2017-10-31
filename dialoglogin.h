@@ -20,9 +20,7 @@ private slots:
 
     void on_buttonBox_rejected();
 
-    void on_buttonBox_destroyed();
 
-    void on_DialogSignup_destroyed();
 
 protected:
      void closeEvent(QCloseEvent *event);
