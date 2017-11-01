@@ -4,7 +4,9 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 
-#include "thread_mes.h"
+#include "message.h"
+#include "sign.h"
+#include "online.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +23,7 @@ public:
 private slots:
         void on_Button_send_clicked();
         void on_mesin(int, int, QString);
+        void on_onluserin(int, QString);
         void on_listWidget_itemClicked(QListWidgetItem *item);
         void on_Button_refresh_clicked();
 
@@ -29,7 +32,7 @@ private:
     void refresh_online();
     QString get_username_by_id(int id);
     int selected_id;
-    thread_message *t_m;
+    MessageClass *m_c;
 
 };
 

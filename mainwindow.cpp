@@ -5,11 +5,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QString>
-
 #include <string>
-#include "message.h"
-#include "sign.h"
-#include "online.h"
 
 using namespace std;
 
@@ -18,26 +14,39 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     m_init();
-    t_m = new thread_message();
     ui->setupUi(this);
     DialogSignup *dsu = new DialogSignup;
     dsu->exec();
 
+
+    m_c = new MessageClass();
+
     refresh_online();
     selected_id = -1;
 
-    connect(t_m, SIGNAL(mesin(int,int,QString)), this, SLOT(on_mesin(int,int,QString)));
-    if(t_m->isRunning() == false){
-        t_m->start();
+    connect(m_c, SIGNAL(mesin(int,int,QString)), this, SLOT(on_mesin(int,int,QString)));
+    connect(m_c, SIGNAL(onluserin(int,QString)), this, SLOT(on_onluserin(int,QString)));
+
+    if(m_c->isRunning() == false){
+        m_c->start();
     }
 
 }
 
 void MainWindow::on_mesin(int tag, int sourceid, QString message){
     QDateTime current_date_time = QDateTime::currentDateTime();
-    QString current_date = current_date_time.toString("yyyy-MM-dd hh:mm:ss");
-    this->ui->textBrowser->append(get_username_by_id(sourceid)+" - "+current_date+":");
+    QString current_date = current_date_time.toString("hh:mm:ss ");
+    this->ui->textBrowser->append("-----------");
+    this->ui->textBrowser->append(current_date+get_username_by_id(sourceid)+" :");
     this->ui->textBrowser->append(message);
+}
+
+void MainWindow::on_onluserin(int id, QString name){
+    QListWidget* listWidget = this->ui->listWidget;
+    QListWidgetItem* l = new QListWidgetItem(listWidget);
+    l->setData(Qt::UserRole, id);//set id to data
+    l->setText(name);
+    listWidget->addItem(l);
 }
 
 QString MainWindow::get_username_by_id(int id){
@@ -52,27 +61,10 @@ QString MainWindow::get_username_by_id(int id){
 }
 
 void MainWindow::refresh_online(){
-    int n;
-    int ids[100];
-    char unames[100][21];
-    if(t_m->isRunning()){
-        t_m->exit();
-    }
-    getOnluser(&n, ids, unames);
-    if(t_m->isRunning() == false){
-        qDebug()<<"t_m->start();";
-        t_m->start();
-    }
     QListWidget* listWidget = this->ui->listWidget;
     listWidget->clear();
-    for(int i=0; i<n; i++){
-        QListWidgetItem* l = new QListWidgetItem(listWidget);
-        l->setData(Qt::UserRole, ids[i]);//set id to data
-        l->setText(unames[i]);
-        listWidget->addItem(l);
-    }
+    getOnluser();
 }
-
 
 MainWindow::~MainWindow()
 {
@@ -90,7 +82,7 @@ void MainWindow::on_Button_send_clicked()
     QByteArray qb_text = qs_text.toLatin1();
     char* c_text = qb_text.data();
     int meslen = qb_text.length();
-    send_message(selected_id, c_text, meslen);
+    m_c->send(selected_id, c_text, meslen);
     this->ui->textEdit->clear();
 }
 

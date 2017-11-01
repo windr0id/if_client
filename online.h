@@ -3,6 +3,6 @@
 
 #include "msocket.h"
 
-int getOnluser(int* n, int ids[], char unames[][21]);
+int getOnluser();
 
 #endif // ONLINE_H
