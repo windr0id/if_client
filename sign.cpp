@@ -35,7 +35,7 @@ int login_back(char* out_username){
     }
 }
 
-int login(int id, int idlen, char* password, int passwordlen){
+int login(int id, char* password, int passwordlen){
     //c->s	title:20	num:2	data0:<int>userid	data1:<char>password[max:20,min:6]
     //发送登录请求
     char buff[BUFF_LEN];
@@ -44,7 +44,7 @@ int login(int id, int idlen, char* password, int passwordlen){
     int num = 2;
     setHead(buff, title, num);
 
-    int datalen[num] = {idlen, passwordlen};
+    int datalen[num] = {4, passwordlen};
     char c_id[4];
     IntToByteArray(id, c_id);
     char* (pdata)[num] = {c_id, password};

@@ -2,6 +2,7 @@
 #define DIALOGSIGNUP_H
 
 #include <QDialog>
+#include <QMessageBox>
 
 namespace Ui {
 class DialogSignup;
@@ -21,6 +22,8 @@ private slots:
     void on_buttonBox_rejected();
 
 
+
+    void on_signupButton_clicked();
 
 protected:
      void closeEvent(QCloseEvent *event);
