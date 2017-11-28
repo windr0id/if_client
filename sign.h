@@ -5,6 +5,7 @@
 
 #define MAX_DATA_NUM 24
 
+int get_userid();
 bool get_status();
 char* get_username();
 int login(int id, char* password, int passwordlen);

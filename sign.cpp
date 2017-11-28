@@ -1,7 +1,12 @@
 #include "sign.h"
 
 bool logined = false;
+int userid = -1;
 char username[21];
+
+int get_userid(){
+    return userid;
+}
 
 bool get_status(){
     return logined;
@@ -26,12 +31,9 @@ int login_back(char* out_username){
     if(title == 21){
         memcpy(out_username, pdata[0], datalen[0]);
         return 0;
-    }else if(title == 29){
-        qDebug()<<"login_back title code 29";
-        return -1;
     }else{
-        qDebug()<<"login_back unknow title";
-        return -2;
+        qDebug()<<"login_back title code: "<<title;
+        return -1;
     }
 }
 
@@ -44,18 +46,42 @@ int login(int id, char* password, int passwordlen){
     int num = 2;
     setHead(buff, title, num);
 
-    int datalen[num] = {4, passwordlen};
+    int datalen[MAX_DATA_NUM] = {4, passwordlen};
     char c_id[4];
     IntToByteArray(id, c_id);
-    char* (pdata)[num] = {c_id, password};
+    char* (pdata)[MAX_DATA_NUM] = {c_id, password};
     int len = setData(buff, num, pdata, datalen);
     m_send(buff, len);
 
     if(login_back(username) != 0){
         return -1;
     }else{
+        userid = id;
         logined = true;
         return 0;
+    }
+}
+
+int signup_back(){
+    //s->c	title:11	num:1	data0:<char>userid[8]
+    //注册成功，返回用户id
+    //s->c	title:19	num:0
+    //注册失败
+    char buff[BUFF_LEN];
+    m_recv(buff);
+    int title;
+    int num;
+    char* (pdata)[MAX_DATA_NUM];
+    int datalen[MAX_DATA_NUM];
+    t_parse(buff, &title, &num, pdata, datalen);
+    if(title == 11){
+        int id = ByteArrayToInt(pdata[0]);
+        qDebug()<<"signup_back userid: "<<id;
+        userid = id;
+        return id;
+    }else{
+        qDebug()<<"signup_back title code: "<<title;
+        return -1;
     }
 }
 
@@ -68,11 +94,11 @@ int signup(char* username, int usernamelen, char* password, int passwordlen){
     int num = 2;
     setHead(buff, title, num);
 
-    int datalen[num] = {usernamelen, passwordlen};
-    char* (pdata)[num] = {username, password};
+    int datalen[MAX_DATA_NUM] = {usernamelen, passwordlen};
+    char* (pdata)[MAX_DATA_NUM] = {username, password};
     int len = setData(buff, num, pdata, datalen);
 
     m_send(buff, len);
 
-    return 0;
+    return signup_back();
 }

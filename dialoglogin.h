@@ -25,6 +25,7 @@ private slots:
 
     void on_signupButton_clicked();
 
+
 protected:
      void closeEvent(QCloseEvent *event);
 

@@ -32,31 +32,34 @@ void DialogSignup::on_buttonBox_accepted()
     QString s_id = this->ui->lineEditID->text();
     QString s_pass = this->ui->lineEditPASS->text();
     QString s_pass2 = this->ui->lineEditPASS2->text();
-    QByteArray qb = s_pass.toLatin1();
-    pass = qb.data();
+    id = s_id.toInt();
+    pass = s_pass.toLatin1().data();
 
-
+    QLabel *qinfo = this->ui->label_info;
     if(b_signup){
-        if(s_pass != s_pass2 || s_pass.length()<6){
-            QMessageBox::StandardButton reply;
-            reply = QMessageBox::information(this, "info", "Password require more than 6 characters OR Repass is different to pass.");
-            if (reply == QMessageBox::Ok)
-                qDebug()<<"ok";
-            else
-                qDebug()<<"escape";
-        }
-    }else{
-        if(qb.length() == 0){
-            pass = "123456";
-        }
-        id = s_id.toInt();
-        if(login(id, pass, strlen(pass)+1) != 0){
-            //do something
-            qDebug()<<"info incorrect";
+        if(s_pass.length()<6){
+            qinfo->setText("Password need more than 6 characters.");
+        }else if(s_pass != s_pass2){
+            qinfo->setText("Repass is wrong.");
         }else{
-            qDebug()<<get_username();
+            int retid = signup(s_id.toLatin1().data(), s_id.length(), s_pass.toLatin1().data(), s_pass.length());
+            if(retid > 0){
+                id = retid;
+            }
         }
     }
+
+    if(s_pass.length() == 0){
+        pass = "123456";
+    }
+
+    if(login(id, pass, strlen(pass)+1) != 0){
+        //do something
+        qDebug()<<"info incorrect";
+    }else{
+        qDebug()<<get_username();
+    }
+
 
 }
 
@@ -77,3 +80,4 @@ void DialogSignup::on_signupButton_clicked()
     this->ui->label->setText("Nickname:");
 
 }
+

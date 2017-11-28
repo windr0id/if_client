@@ -151,7 +151,7 @@
     <string>no account? click here:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
+  <widget class="QLabel" name="label_info">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -166,7 +166,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Password require more than 6 characters OR Repass is different to pass.</string>
+    <string>Password require more than 6 characters.</string>
    </property>
   </widget>
  </widget>

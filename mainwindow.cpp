@@ -19,6 +19,15 @@ MainWindow::MainWindow(QWidget *parent) :
     DialogSignup *dsu = new DialogSignup;
     dsu->exec();
 
+    while(get_status() == false){
+        QMessageBox *qd = new QMessageBox();
+        qd->setText("Login error: authentication fail.");
+        qd->setWindowTitle("info");
+        qd->exec();
+        dsu->exec();
+    }
+
+    this->setWindowTitle("Your ID is: "+QString::number(get_userid()));
 
     m_c = new MessageClass();
 
