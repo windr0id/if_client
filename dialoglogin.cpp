@@ -50,6 +50,7 @@ void DialogSignup::on_buttonBox_accepted()
     }
 
     if(s_pass.length() == 0){
+        id = 10006;
         pass = "123456";
     }
 

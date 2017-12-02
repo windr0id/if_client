@@ -17,7 +17,7 @@ public:
 signals:
     void mesin(int tag, int sourceid, QString message);
     void onluserin(int id, QString name);
-
+    void p2p_req_in(int tag, int sourceid, int filesize, QString filename);
 };
 
 #endif // WRAPPER_H

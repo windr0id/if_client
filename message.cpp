@@ -12,8 +12,8 @@ int MessageClass::get(){
     char buff[BUFF_LEN];
     int title;
     int num;
-    char* (pdata)[1024];
-    int datalen[1024];
+    char* (pdata)[MAX_DATA_LEN];
+    int datalen[MAX_DATA_LEN];
     m_recv(buff);
     t_parse(buff, &title, &num, pdata, datalen);
 
@@ -35,6 +35,14 @@ int MessageClass::get(){
             emit onluserin(id, name);
         }
         return 0;
+    }else if(title == 55){
+        //s->c	title:55	num:4	data0:<int>-tag	data1:<int>sourceid	data2:<int>filesize	data3:<char>filename[max:256]
+        //分发传输请求
+        int tag = ByteArrayToInt(pdata[0]);
+        int sourceid = ByteArrayToInt(pdata[1]);
+        int filesize = ByteArrayToInt(pdata[2]);
+        QString filename = pdata[3];
+        emit p2p_req_in(tag, sourceid, filesize, filename);
     }else{
         qDebug()<<"get_message error: "<<title;
         return -1;

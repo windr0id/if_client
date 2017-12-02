@@ -31,7 +31,9 @@ SOURCES += \
     sign.cpp \
     message.cpp \
     dialoglogin.cpp \
-    online.cpp
+    online.cpp \
+    filewindow.cpp \
+    p2p.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,8 +42,11 @@ HEADERS += \
     sign.h \
     message.h \
     dialoglogin.h \
-    online.h
+    online.h \
+    filewindow.h \
+    p2p.h
 
 FORMS += \
         mainwindow.ui \
-    dialoglogin.ui
+    dialoglogin.ui \
+    filewindow.ui

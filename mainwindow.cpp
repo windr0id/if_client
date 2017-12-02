@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialoglogin.h"
+#include "filewindow.h"
 #include <QDebug>
+#include <QDesktopWidget>
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QHBoxLayout>
@@ -26,21 +28,21 @@ MainWindow::MainWindow(QWidget *parent) :
         qd->exec();
         dsu->exec();
     }
-
     this->setWindowTitle("Your ID is: "+QString::number(get_userid()));
-
-    m_c = new MessageClass();
 
     refresh_online();
     selected_id = -1;
 
+    m_c = new MessageClass();
     connect(m_c, SIGNAL(mesin(int,int,QString)), this, SLOT(on_mesin(int,int,QString)));
     connect(m_c, SIGNAL(onluserin(int,QString)), this, SLOT(on_onluserin(int,QString)));
-
+    connect(m_c, SIGNAL(p2p_req_in(int,int,int,QString)), this, SLOT(on_p2p_req_in(int,int,int,QString)));
     if(m_c->isRunning() == false){
         m_c->start();
     }
 
+    QDesktopWidget* desktop = QApplication::desktop();
+    move((desktop->width() - this->width())/2, (desktop->height() - this->height())/2);
 }
 
 void MainWindow::on_mesin(int tag, int sourceid, QString message){
@@ -79,6 +81,18 @@ void MainWindow::on_onluserin(int id, QString name){
     listWidget->setItemWidget(l, widget);
     //listWidget->setGeometry(0,0,300,350);
     l->setSizeHint(QSize(98,60));
+}
+
+void MainWindow::on_p2p_req_in(int tag, int sourceid, int filesize, QString filename){
+    QString name = get_username_by_id(sourceid);
+    QString sz = QString::number(filesize/1024)+"KB";
+    QMessageBox::StandardButton rb = QMessageBox::question(NULL, tr("File request"),
+                          "User: "+name+" want send you file: "+filename+" size: "+sz,
+                          QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+    if(rb == QMessageBox::No){
+        return;
+    }
+    qDebug()<<"yes";
 }
 
 QString MainWindow::get_username_by_id(int id){
@@ -130,4 +144,19 @@ void MainWindow::on_Button_refresh_clicked()
     refresh_online();
     selected_id = -1;
     this->ui->label_info->setText("Select a user to send message.");
+}
+
+void MainWindow::on_Button_refresh_2_clicked()
+{
+    if(selected_id == -1){
+        this->ui->label_info->setText("No user selected.");
+        return;
+    }
+    FileWindow *fw = new FileWindow(this);
+    fw->show();
+    fw->move(this->pos().rx()+this->width(), this->pos().ry());
+}
+
+int MainWindow::get_selected_id(){
+    return selected_id;
 }

@@ -1,29 +1,28 @@
 #include "msocket.h"
 
-int client_fd;
+int server_fd;
+int remote_fd;
 
 using namespace std;
 
 int m_init(){
-
-    struct sockaddr_in clinaddr;
-
-    client_fd = socket(AF_INET , SOCK_STREAM, 0);
+    struct sockaddr_in servaddr;
+    server_fd = socket(AF_INET , SOCK_STREAM, 0);
     //cout<<clint_fd<<endl;
-    memset(&clinaddr, 0, sizeof(clinaddr));
-    clinaddr.sin_family = AF_INET;
-    clinaddr.sin_addr.s_addr = inet_addr(IP);
-    clinaddr.sin_port = htons(PORT);
+    memset(&servaddr, 0, sizeof(servaddr));
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = inet_addr(IP);
+    servaddr.sin_port = htons(PORT);
 
     int erno;
-    if((erno = connect(client_fd, (struct sockaddr*)&clinaddr, sizeof(clinaddr))) <0){
+    if((erno = connect(server_fd, (struct sockaddr*)&servaddr, sizeof(servaddr))) <0){
         cout<<" connect err:"<<erno<<endl;
     }
     return 0;
 }
 
 int m_send(const char* buff, int len){
-    if(send(client_fd, buff, len, 0)<0){
+    if(send(server_fd, buff, len, 0)<0){
         qDebug()<<"msocket=>m_send: send error.";
         return -1;
     }else{
@@ -34,7 +33,7 @@ int m_send(const char* buff, int len){
 
 int m_recv(char* buff){
     int n;
-    if((n = recv(client_fd, buff, BUFF_LEN, 0)) < 0){
+    if((n = recv(server_fd, buff, BUFF_LEN, 0)) < 0){
         qDebug()<<"msocket=>m_recv error.";
     }else{
         return n;
@@ -42,8 +41,23 @@ int m_recv(char* buff){
 }
 
 void m_close(){
-    close(client_fd);
+    close(server_fd);
 }
+
+int m_p2p_init(char* remote_ip, int remote_port){
+    struct sockaddr_in remoteaddr;
+    remote_fd = socket(AF_INET , SOCK_DGRAM, 0);
+    //cout<<remote_fd<<endl;
+    memset(&remoteaddr, 0, sizeof(remoteaddr));
+    remoteaddr.sin_family = AF_INET;
+    remoteaddr.sin_addr.s_addr = inet_addr(remote_ip);
+    remoteaddr.sin_port = htons(remote_port);
+
+
+
+}
+
+
 
 int m_test(){
     char buff[BUFF_LEN];
